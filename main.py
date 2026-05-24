@@ -62,10 +62,15 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('trading_bot.log'),
-        logging.StreamHandler(),
+        logging.FileHandler('trading_bot.log', encoding='utf-8'),
+        logging.StreamHandler(sys.stdout),
     ],
 )
+# Force UTF-8 on Windows console to avoid emoji encoding errors
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+
 
 # ============================================================================
 # Cooldown tracking
